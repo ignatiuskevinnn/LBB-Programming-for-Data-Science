@@ -2253,7 +2253,7 @@ summary {
 <h1>Exploratory Data Analysis</h1>
 <div id="call-library" class="section level3">
 <h3>Call Library</h3>
-<p>Memanggil library yang akan digunakan untuk membantu pembuatan analisis.</p>
+<p>Memanggil library yang akan digunakan untuk membantu pembuatan analisis. Library dplyr digunakan untuk memudahkan dalam proses pengolahan data tersebut menjadi sebuah plot. Library ggplot2 digunakan untuk membuat plot, dan library plotly digunakan untuk membuat plot sebelumnya menjadi interaktif.</p>
 <pre class="r"><code>library(dplyr)</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
@@ -2284,7 +2284,7 @@ library(plotly)</code></pre>
 </div>
 <div id="data-inspection" class="section level3">
 <h3>Data Inspection</h3>
-<p>melihat dan Melakukan cek terhadap data berserta dengan tipe datanya.</p>
+<p>melihat dan Melakukan cek terhadap data berserta dengan tipe datanya. Head digunakan untuk melihat 5 data pertama dari dataset crime. Untuk str digunakan untuk menampilkan struktur internal dari data crime secara compact.</p>
 <pre class="r"><code>head(crime)</code></pre>
 <pre><code>##   IncidntNum     Category                                       Descript
 ## 1  120058272  WEAPON LAWS                      POSS OF PROHIBITED WEAPON
@@ -2332,7 +2332,7 @@ library(plotly)</code></pre>
 </div>
 <div id="data-coercion" class="section level3">
 <h3>Data Coercion</h3>
-<p>Mengubah tipe data yang masih salah ke yang benar.</p>
+<p>Mengubah tipe data yang masih salah ke yang benar. Pada saat dataset dipanggil, masih terdapat beberapa kolom data yang belum sesuai tipe datanya. Contohnya kolom Category, Dayofweek, PdDistrict, Resolution yang harusnya menggunakan tipe data factor dikarenakan jumlah nilai yang uniquenya sedikit. Selain itu terdapat juga kolom Date dan Time yang harus diubah ke tipe data Date untuk menunjukan tanggal dan posixct untuk menunjukan waktu.</p>
 <pre class="r"><code>crime$Category &lt;- as.factor(crime$Category)
 crime$DayOfWeek &lt;- as.factor(crime$DayOfWeek)
 crime$PdDistrict &lt;- as.factor(crime$PdDistrict)
@@ -2357,7 +2357,7 @@ str(crime)</code></pre>
 </div>
 <div id="check-null-on-data" class="section level3">
 <h3>Check null on Data</h3>
-<p>Mengecek apakah terdapat data yang kosong.</p>
+<p>Mengecek apakah terdapat data yang kosong. Jika terdapat data yang kosong, kita dapat melakukan treatment berbeda untuk data kita ini.</p>
 <pre class="r"><code>colSums(is.na(crime))</code></pre>
 <pre><code>## IncidntNum   Category   Descript  DayOfWeek       Date       Time PdDistrict 
 ##          0          0          0          0          0          0          0 
@@ -2366,7 +2366,7 @@ str(crime)</code></pre>
 </div>
 <div id="days-when-the-most-crimes-occured" class="section level3">
 <h3>Days When The Most Crimes Occured</h3>
-<p>Menghitung pada hari aja tingkat kejahatan paling sering terjadi.</p>
+<p>Menghitung pada hari apa tingkat kejahatan paling sering terjadi. Disini kita melakukan groupby untuk kolom Dayofweek, kemudian menggunakan fungsi tally untuk menjumlahkannya. Hasil dari kedua fungsi tersebut kan berupa dataframe yang kemudian kita urutkan dari besar ke kecil menggunakan fungsi arrange.</p>
 <pre class="r"><code>Day07 &lt;- crime %&gt;% 
   group_by(DayOfWeek) %&gt;% 
   tally %&gt;% 
@@ -2386,7 +2386,7 @@ Day07</code></pre>
 </div>
 <div id="top-10-crime-in-san-francisco-2016" class="section level3">
 <h3>Top 10 Crime in San Francisco 2016</h3>
-<p>Membuat plot untuk melihat 10 tipe kategori kejahatan yang paling sering dilakukan.</p>
+<p>Membuat plot untuk melihat 10 tipe kategori kejahatan yang paling sering dilakukan. Sama seperti diatas kita perlu menghitung kejahatan kategori apa yang paling banyak dilakukan. Setelah mendapatkan hasil, kita membuat plot menggunakan library ggplot2. Agar lebih menarik kita juga bisa menambahkan interaktif terhadap plot kita menggunakan library plotly.</p>
 <pre class="r"><code>crime10 &lt;- crime %&gt;% 
   group_by(Category) %&gt;% 
   tally %&gt;% 
@@ -2408,8 +2408,8 @@ Day07</code></pre>
   theme_algo
 
 ggplotly(p1, tooltip = &quot;text&quot;)</code></pre>
-<div id="htmlwidget-516b636757ad2cf9bc4d" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-516b636757ad2cf9bc4d">{"x":{"data":[{"orientation":"v","width":[40409,19599,17866,13577,8589,6419,5914,5802,5782,4338],"base":[9.55,8.55,7.55,6.55,5.55,4.55,3.55,2.55,1.55,0.55],"x":[20204.5,9799.5,8933,6788.5,4294.5,3209.5,2957,2901,2891,2169],"y":[0.899999999999999,0.899999999999999,0.899999999999999,0.9,0.9,0.9,0.9,0.9,0.9,0.9],"text":"","type":"bar","marker":{"autocolorscale":false,"color":"rgba(157,52,254,1)","line":{"width":1.88976377952756,"color":"transparent"}},"showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":52.7953507679535,"r":7.30593607305936,"b":40.1826484018265,"l":107.397260273973},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Top 10 Crime in San Francisco 2016","font":{"color":"rgba(0,0,0,1)","family":"","size":26.5670402656704},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-2020.45,42429.45],"tickmode":"array","ticktext":["0","10000","20000","30000","40000"],"tickvals":[0,10000,20000,30000,40000],"categoryorder":"array","categoryarray":["0","10000","20000","30000","40000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Quantity","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,10.6],"tickmode":"array","ticktext":["MISSING PERSON","SUSPICIOUS OCC","BURGLARY","WARRANTS","VEHICLE THEFT","VANDALISM","ASSAULT","NON-CRIMINAL","OTHER OFFENSES","LARCENY/THEFT"],"tickvals":[1,2,3,4,5,6,7,8,9,10],"categoryorder":"array","categoryarray":["MISSING PERSON","SUSPICIOUS OCC","BURGLARY","WARRANTS","VEHICLE THEFT","VANDALISM","ASSAULT","NON-CRIMINAL","OTHER OFFENSES","LARCENY/THEFT"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Crime Category","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"576c144e5986":{"x":{},"y":{},"type":"bar"}},"cur_data":"576c144e5986","visdat":{"576c144e5986":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2b8a182f98bbad4b17a2" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2b8a182f98bbad4b17a2">{"x":{"data":[{"orientation":"v","width":[40409,19599,17866,13577,8589,6419,5914,5802,5782,4338],"base":[9.55,8.55,7.55,6.55,5.55,4.55,3.55,2.55,1.55,0.55],"x":[20204.5,9799.5,8933,6788.5,4294.5,3209.5,2957,2901,2891,2169],"y":[0.899999999999999,0.899999999999999,0.899999999999999,0.9,0.9,0.9,0.9,0.9,0.9,0.9],"text":"","type":"bar","marker":{"autocolorscale":false,"color":"rgba(157,52,254,1)","line":{"width":1.88976377952756,"color":"transparent"}},"showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":52.7953507679535,"r":7.30593607305936,"b":40.1826484018265,"l":107.397260273973},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Top 10 Crime in San Francisco 2016","font":{"color":"rgba(0,0,0,1)","family":"","size":26.5670402656704},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-2020.45,42429.45],"tickmode":"array","ticktext":["0","10000","20000","30000","40000"],"tickvals":[0,10000,20000,30000,40000],"categoryorder":"array","categoryarray":["0","10000","20000","30000","40000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Quantity","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,10.6],"tickmode":"array","ticktext":["MISSING PERSON","SUSPICIOUS OCC","BURGLARY","WARRANTS","VEHICLE THEFT","VANDALISM","ASSAULT","NON-CRIMINAL","OTHER OFFENSES","LARCENY/THEFT"],"tickvals":[1,2,3,4,5,6,7,8,9,10],"categoryorder":"array","categoryarray":["MISSING PERSON","SUSPICIOUS OCC","BURGLARY","WARRANTS","VEHICLE THEFT","VANDALISM","ASSAULT","NON-CRIMINAL","OTHER OFFENSES","LARCENY/THEFT"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Crime Category","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"53d44ed75409":{"x":{},"y":{},"type":"bar"}},"cur_data":"53d44ed75409","visdat":{"53d44ed75409":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="conclusion" class="section level3">
 <h3>Conclusion</h3>

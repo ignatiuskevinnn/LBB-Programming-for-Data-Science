@@ -3,6 +3,9 @@ title: "San Francisco Crime in 2016"
 author: "Ignatius Kevin"
 date: "10/27/2020"
 output: html_document
+number_sections: true
+theme: united
+highlight: espresso
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +17,7 @@ Halo, ini merupakan tugas Learning by Building yang bertujuan untuk menganalisis
 # Exploratory Data Analysis
 
 ### Call Library
-Memanggil library yang akan digunakan untuk membantu pembuatan analisis.
+Memanggil library yang akan digunakan untuk membantu pembuatan analisis. Library dplyr digunakan untuk memudahkan dalam proses pengolahan data tersebut menjadi sebuah plot. Library ggplot2 digunakan untuk membuat plot, dan library plotly digunakan untuk membuat plot sebelumnya menjadi interaktif.
 ```{r, warning=FALSE}
 library(dplyr)
 library(ggplot2)
@@ -28,13 +31,14 @@ crime <- read.csv("crime.csv")
 ```
 
 ### Data Inspection
-melihat dan Melakukan cek terhadap data berserta dengan tipe datanya.
+melihat dan Melakukan cek terhadap data berserta dengan tipe datanya. Head digunakan untuk melihat 5 data pertama dari dataset crime. Untuk str digunakan untuk menampilkan struktur internal dari data crime secara compact.
 ```{r}
 head(crime)
 str(crime)
 ```
+
 ### Data Coercion
-Mengubah tipe data yang masih salah ke yang benar.
+Mengubah tipe data yang masih salah ke yang benar. Pada saat dataset dipanggil, masih terdapat beberapa kolom data yang belum sesuai tipe datanya. Contohnya kolom Category, Dayofweek, PdDistrict, Resolution yang harusnya menggunakan tipe data factor dikarenakan jumlah nilai yang uniquenya sedikit. Selain itu terdapat juga kolom Date dan Time yang harus diubah ke tipe data Date untuk menunjukan tanggal dan posixct untuk menunjukan waktu.
 ```{r}
 crime$Category <- as.factor(crime$Category)
 crime$DayOfWeek <- as.factor(crime$DayOfWeek)
@@ -44,13 +48,15 @@ crime$Date<- as.Date(crime$Date, "%m/%d/%y")
 crime$Time<- strptime(crime$Time, "%H:%M")
 str(crime)
 ```
+
 ### Check null on Data
-Mengecek apakah terdapat data yang kosong.
+Mengecek apakah terdapat data yang kosong. Jika terdapat data yang kosong, kita dapat melakukan treatment berbeda untuk data kita ini.
 ```{r}
 colSums(is.na(crime))
 ```
+
 ### Days When The Most Crimes Occured
-Menghitung pada hari aja tingkat kejahatan paling sering terjadi.
+Menghitung pada hari apa tingkat kejahatan paling sering terjadi. Disini kita melakukan groupby untuk kolom Dayofweek, kemudian menggunakan fungsi tally untuk menjumlahkannya. Hasil dari kedua fungsi tersebut kan berupa dataframe yang kemudian kita urutkan dari besar ke kecil menggunakan fungsi arrange.
 ```{r}
 Day07 <- crime %>% 
   group_by(DayOfWeek) %>% 
@@ -61,7 +67,7 @@ Day07
 ```
 
 ### Top 10 Crime in San Francisco 2016
-Membuat plot untuk melihat 10 tipe kategori kejahatan yang paling sering dilakukan.
+Membuat plot untuk melihat 10 tipe kategori kejahatan yang paling sering dilakukan. Sama seperti diatas kita perlu menghitung kejahatan kategori apa yang paling banyak dilakukan. Setelah mendapatkan hasil, kita membuat plot menggunakan library ggplot2. Agar lebih menarik kita juga bisa menambahkan interaktif terhadap plot kita menggunakan library plotly.
 ```{r}
 crime10 <- crime %>% 
   group_by(Category) %>% 
