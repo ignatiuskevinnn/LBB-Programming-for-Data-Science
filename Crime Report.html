@@ -2249,22 +2249,22 @@ summary {
 
 
 <p>Halo, ini merupakan tugas Learning by Building yang bertujuan untuk menganalisis tingkat kejahatan yang terjadi di San Francisco pada Tahun 2016. Dataset diambil dari website <a href="https://www.kaggle.com/datasets" class="uri">https://www.kaggle.com/datasets</a>. Analisis dibuat dengan program R dan menggunakan beberapa library tambahan seperti dplyr, ggplot2, dan plotly. Analisis yang dibuat adalah kategori kejahatan apa yang paling banyak dilakukan dan hari dimana kejahatan sering terjadi.</p>
-<div id="exploratory-data-analysis" class="section level1">
-<h1>Exploratory Data Analysis</h1>
-<div id="call-library" class="section level3">
-<h3>Call Library</h3>
+<div id="analysis-report" class="section level1">
+<h1>Analysis Report</h1>
+<div id="call-library" class="section level2">
+<h2>Call Library</h2>
 <p>Memanggil library yang akan digunakan untuk membantu pembuatan analisis. Library dplyr digunakan untuk memudahkan dalam proses pengolahan data tersebut menjadi sebuah plot. Library ggplot2 digunakan untuk membuat plot, dan library plotly digunakan untuk membuat plot sebelumnya menjadi interaktif.</p>
 <pre class="r"><code>library(dplyr)
 library(ggplot2)
 library(plotly)</code></pre>
 </div>
-<div id="call-data" class="section level3">
-<h3>Call Data</h3>
+<div id="call-data" class="section level2">
+<h2>Call Data</h2>
 <p>Memanggil dataset yang sudah didownload dari <a href="https://www.kaggle.com/datasets" class="uri">https://www.kaggle.com/datasets</a>. Dataset ini berisikan kejahatan yang terjadi di San Francisco pada tahun 2016. Data terdiri dari kolom IncidntNum, Category, Descript, DayOfWeek, Date, Time, PdDistrict, Resolution, Address, X, Y, Location, PdID.</p>
 <pre class="r"><code>crime &lt;- read.csv(&quot;crime.csv&quot;)</code></pre>
 </div>
-<div id="data-inspection" class="section level3">
-<h3>Data Inspection</h3>
+<div id="data-inspection" class="section level2">
+<h2>Data Inspection</h2>
 <p>melihat dan Melakukan cek terhadap data berserta dengan tipe datanya. Head digunakan untuk melihat 5 data pertama dari dataset crime. Untuk str digunakan untuk menampilkan struktur internal dari data crime secara compact.</p>
 <pre class="r"><code>head(crime)</code></pre>
 <pre><code>##   IncidntNum     Category                                       Descript
@@ -2310,7 +2310,6 @@ library(plotly)</code></pre>
 ##  $ Y         : num  37.8 37.8 37.7 37.8 37.8 ...
 ##  $ Location  : chr  &quot;(37.775420706711, -122.403404791479)&quot; &quot;(37.775420706711, -122.403404791479)&quot; &quot;(37.7299809672996, -122.388856204292)&quot; &quot;(37.7857883766888, -122.412970537591)&quot; ...
 ##  $ PdId      : num  1.20e+13 1.20e+13 1.41e+13 1.60e+13 1.60e+13 ...</code></pre>
-</div>
 <div id="data-coercion" class="section level3">
 <h3>Data Coercion</h3>
 <p>Mengubah tipe data yang masih salah ke yang benar. Pada saat dataset dipanggil, masih terdapat beberapa kolom data yang belum sesuai tipe datanya. Contohnya kolom Category, Dayofweek, PdDistrict, Resolution yang harusnya menggunakan tipe data factor dikarenakan jumlah nilai yang uniquenya sedikit. Selain itu terdapat juga kolom Date dan Time yang harus diubah ke tipe data Date untuk menunjukan tanggal dan posixct untuk menunjukan waktu.</p>
@@ -2336,8 +2335,9 @@ str(crime)</code></pre>
 ##  $ Location  : chr  &quot;(37.775420706711, -122.403404791479)&quot; &quot;(37.775420706711, -122.403404791479)&quot; &quot;(37.7299809672996, -122.388856204292)&quot; &quot;(37.7857883766888, -122.412970537591)&quot; ...
 ##  $ PdId      : num  1.20e+13 1.20e+13 1.41e+13 1.60e+13 1.60e+13 ...</code></pre>
 </div>
-<div id="check-null-on-data" class="section level3">
-<h3>Check null on Data</h3>
+</div>
+<div id="check-null-on-data" class="section level2">
+<h2>Check null on Data</h2>
 <p>Mengecek apakah terdapat data yang kosong. Jika terdapat data yang kosong, kita dapat melakukan treatment berbeda untuk data kita ini.</p>
 <pre class="r"><code>colSums(is.na(crime))</code></pre>
 <pre><code>## IncidntNum   Category   Descript  DayOfWeek       Date       Time PdDistrict 
@@ -2345,9 +2345,9 @@ str(crime)</code></pre>
 ## Resolution    Address          X          Y   Location       PdId 
 ##          0          0          0          0          0          0</code></pre>
 </div>
-<div id="days-when-the-most-crimes-occured" class="section level3">
-<h3>Days When The Most Crimes Occured</h3>
-<p>Menghitung pada hari apa tingkat kejahatan paling sering terjadi. Disini kita melakukan groupby untuk kolom Dayofweek, kemudian menggunakan fungsi tally untuk menjumlahkannya. Hasil dari kedua fungsi tersebut kan berupa dataframe yang kemudian kita urutkan dari besar ke kecil menggunakan fungsi arrange.</p>
+<div id="days-when-the-most-crimes-occured" class="section level2">
+<h2>Days When The Most Crimes Occured</h2>
+<p>Menghitung pada hari apa tingkat kejahatan paling sering terjadi. Disini kita melakukan groupby untuk kolom Dayofweek, kemudian menggunakan fungsi tally untuk menjumlahkannya. Hasil dari kedua fungsi tersebut akan berupa dataframe yang kemudian kita urutkan dari besar ke kecil menggunakan fungsi arrange.</p>
 <pre class="r"><code>Day07 &lt;- crime %&gt;% 
   group_by(DayOfWeek) %&gt;% 
   tally %&gt;% 
@@ -2365,8 +2365,8 @@ Day07</code></pre>
 ## 6 Monday    20783
 ## 7 Sunday    20205</code></pre>
 </div>
-<div id="top-10-crime-in-san-francisco-2016" class="section level3">
-<h3>Top 10 Crime in San Francisco 2016</h3>
+<div id="top-10-crime-in-san-francisco-2016" class="section level2">
+<h2>Top 10 Crime in San Francisco 2016</h2>
 <p>Membuat plot untuk melihat 10 tipe kategori kejahatan yang paling sering dilakukan. Sama seperti diatas kita perlu menghitung kejahatan kategori apa yang paling banyak dilakukan. Setelah mendapatkan hasil, kita membuat plot menggunakan library ggplot2. Agar lebih menarik kita juga bisa menambahkan interaktif terhadap plot kita menggunakan library plotly.</p>
 <pre class="r"><code>crime10 &lt;- crime %&gt;% 
   group_by(Category) %&gt;% 
@@ -2389,11 +2389,11 @@ Day07</code></pre>
   theme_algo
 
 ggplotly(p1, tooltip = &quot;text&quot;)</code></pre>
-<div id="htmlwidget-94eff67cbeef69e4c1c5" style="width:672px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-94eff67cbeef69e4c1c5">{"x":{"data":[{"orientation":"v","width":[40409,19599,17866,13577,8589,6419,5914,5802,5782,4338],"base":[9.55,8.55,7.55,6.55,5.55,4.55,3.55,2.55,1.55,0.55],"x":[20204.5,9799.5,8933,6788.5,4294.5,3209.5,2957,2901,2891,2169],"y":[0.899999999999999,0.899999999999999,0.899999999999999,0.9,0.9,0.9,0.9,0.9,0.9,0.9],"text":"","type":"bar","marker":{"autocolorscale":false,"color":"rgba(157,52,254,1)","line":{"width":1.88976377952756,"color":"transparent"}},"showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":52.7953507679535,"r":7.30593607305936,"b":40.1826484018265,"l":107.397260273973},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Top 10 Crime in San Francisco 2016","font":{"color":"rgba(0,0,0,1)","family":"","size":26.5670402656704},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-2020.45,42429.45],"tickmode":"array","ticktext":["0","10000","20000","30000","40000"],"tickvals":[0,10000,20000,30000,40000],"categoryorder":"array","categoryarray":["0","10000","20000","30000","40000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Quantity","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,10.6],"tickmode":"array","ticktext":["MISSING PERSON","SUSPICIOUS OCC","BURGLARY","WARRANTS","VEHICLE THEFT","VANDALISM","ASSAULT","NON-CRIMINAL","OTHER OFFENSES","LARCENY/THEFT"],"tickvals":[1,2,3,4,5,6,7,8,9,10],"categoryorder":"array","categoryarray":["MISSING PERSON","SUSPICIOUS OCC","BURGLARY","WARRANTS","VEHICLE THEFT","VANDALISM","ASSAULT","NON-CRIMINAL","OTHER OFFENSES","LARCENY/THEFT"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Crime Category","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"1338118e5bf8":{"x":{},"y":{},"type":"bar"}},"cur_data":"1338118e5bf8","visdat":{"1338118e5bf8":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-509454d8b8b0bc8c4828" style="width:672px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-509454d8b8b0bc8c4828">{"x":{"data":[{"orientation":"v","width":[40409,19599,17866,13577,8589,6419,5914,5802,5782,4338],"base":[9.55,8.55,7.55,6.55,5.55,4.55,3.55,2.55,1.55,0.55],"x":[20204.5,9799.5,8933,6788.5,4294.5,3209.5,2957,2901,2891,2169],"y":[0.899999999999999,0.899999999999999,0.899999999999999,0.9,0.9,0.9,0.9,0.9,0.9,0.9],"text":"","type":"bar","marker":{"autocolorscale":false,"color":"rgba(157,52,254,1)","line":{"width":1.88976377952756,"color":"transparent"}},"showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":52.7953507679535,"r":7.30593607305936,"b":40.1826484018265,"l":107.397260273973},"plot_bgcolor":"rgba(255,255,255,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Top 10 Crime in San Francisco 2016","font":{"color":"rgba(0,0,0,1)","family":"","size":26.5670402656704},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-2020.45,42429.45],"tickmode":"array","ticktext":["0","10000","20000","30000","40000"],"tickvals":[0,10000,20000,30000,40000],"categoryorder":"array","categoryarray":["0","10000","20000","30000","40000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Quantity","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[0.4,10.6],"tickmode":"array","ticktext":["MISSING PERSON","SUSPICIOUS OCC","BURGLARY","WARRANTS","VEHICLE THEFT","VANDALISM","ASSAULT","NON-CRIMINAL","OTHER OFFENSES","LARCENY/THEFT"],"tickvals":[1,2,3,4,5,6,7,8,9,10],"categoryorder":"array","categoryarray":["MISSING PERSON","SUSPICIOUS OCC","BURGLARY","WARRANTS","VEHICLE THEFT","VANDALISM","ASSAULT","NON-CRIMINAL","OTHER OFFENSES","LARCENY/THEFT"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Crime Category","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","showSendToCloud":false},"source":"A","attrs":{"504448c918d3":{"x":{},"y":{},"type":"bar"}},"cur_data":"504448c918d3","visdat":{"504448c918d3":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
-<div id="conclusion" class="section level3">
-<h3>Conclusion</h3>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
 <p>Dari hasil Exploratory Data Analysis diatas dapat dilihat bahwa kejahatan paling sering terjadi dimulai pada hari Jumat, kemudian dilanjutkan dengan hari Sabtu dan Minggu. Hal ini menunjukan kejahatan sering terjadi pada hari libur. Untuk tipe kategori kejahatan yang paling sering terjadi adalah larceny/theft (pencurian). Untuk menanggulangi hal ini mungkin patroli dapat lebih diperketat atau ditambahkan di tempat umum pada ketiga hari tersebut untuk mencegah terjadinya pencurian.</p>
 </div>
 </div>
