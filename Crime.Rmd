@@ -18,7 +18,7 @@ Halo, ini merupakan tugas Learning by Building yang bertujuan untuk menganalisis
 
 ### Call Library
 Memanggil library yang akan digunakan untuk membantu pembuatan analisis. Library dplyr digunakan untuk memudahkan dalam proses pengolahan data tersebut menjadi sebuah plot. Library ggplot2 digunakan untuk membuat plot, dan library plotly digunakan untuk membuat plot sebelumnya menjadi interaktif.
-```{r, warning=FALSE}
+```{r,error=FALSE, message=FALSE}
 library(dplyr)
 library(ggplot2)
 library(plotly)
