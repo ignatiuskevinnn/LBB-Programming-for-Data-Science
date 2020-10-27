@@ -1,0 +1,97 @@
+---
+title: "San Francisco Crime in 2016"
+author: "Ignatius Kevin"
+date: "10/27/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Halo, ini merupakan tugas Learning by Building yang bertujuan untuk menganalisis tingkat kejahatan yang terjadi di San Francisco pada Tahun 2016. Dataset diambil dari website https://www.kaggle.com/datasets. Analisis dibuat dengan program R dan menggunakan beberapa library tambahan seperti dplyr, ggplot2, dan plotly. Analisis yang dibuat adalah kategori kejahatan apa yang paling banyak dilakukan dan hari dimana kejahatan sering terjadi.
+
+# Exploratory Data Analysis
+
+### Call Library
+Memanggil library yang akan digunakan untuk membantu pembuatan analisis.
+```{r, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(plotly)
+```
+
+### Call Data
+Memanggil dataset yang sudah didownload dari https://www.kaggle.com/datasets. Dataset ini berisikan kejahatan yang terjadi di San Francisco pada tahun 2016. Data terdiri dari kolom IncidntNum, Category, Descript, DayOfWeek, Date, Time, PdDistrict, Resolution, Address, X, Y, Location, PdID.
+```{r}
+crime <- read.csv("crime.csv")
+```
+
+### Data Inspection
+melihat dan Melakukan cek terhadap data berserta dengan tipe datanya.
+```{r}
+head(crime)
+str(crime)
+```
+### Data Coercion
+Mengubah tipe data yang masih salah ke yang benar.
+```{r}
+crime$Category <- as.factor(crime$Category)
+crime$DayOfWeek <- as.factor(crime$DayOfWeek)
+crime$PdDistrict <- as.factor(crime$PdDistrict)
+crime$Resolution <- as.factor(crime$Resolution)
+crime$Date<- as.Date(crime$Date, "%m/%d/%y")
+crime$Time<- strptime(crime$Time, "%H:%M")
+str(crime)
+```
+### Check null on Data
+Mengecek apakah terdapat data yang kosong.
+```{r}
+colSums(is.na(crime))
+```
+### Days When The Most Crimes Occured
+Menghitung pada hari aja tingkat kejahatan paling sering terjadi.
+```{r}
+Day07 <- crime %>% 
+  group_by(DayOfWeek) %>% 
+  tally %>% 
+  arrange(desc(n))
+
+Day07
+```
+
+### Top 10 Crime in San Francisco 2016
+Membuat plot untuk melihat 10 tipe kategori kejahatan yang paling sering dilakukan.
+```{r}
+crime10 <- crime %>% 
+  group_by(Category) %>% 
+  tally %>% 
+  arrange(desc(n)) %>% 
+  slice(1:10)
+```
+
+```{r}
+theme_algo <- theme(
+  panel.background = element_rect(fill = "white"),
+  panel.grid.major = element_line(colour = "white"),
+  plot.title = element_text(family = "", 
+                            size = 20, 
+                            color = "Black"))
+```
+
+```{r}
+p1 <- crime10 %>% 
+  ggplot(aes(x = n, y = reorder(Category, n))) +
+  geom_col(fill = "#9D34FE") + 
+  labs(title = "Top 10 Crime in San Francisco 2016",
+       x = "Quantity", 
+       y = "Crime Category") +
+  theme(legend.position = "none") +
+  theme_algo
+
+ggplotly(p1, tooltip = "text")
+
+```
+
+### Conclusion
+Dari hasil Exploratory Data Analysis diatas dapat dilihat bahwa kejahatan paling sering terjadi dimulai pada hari Jumat, kemudian dilanjutkan dengan hari Sabtu dan Minggu. Hal ini menunjukan kejahatan sering terjadi pada hari libur. Untuk tipe kategori kejahatan yang paling sering terjadi adalah larceny/theft (pencurian). Untuk menanggulangi hal ini mungkin patroli dapat lebih diperketat atau ditambahkan di tempat umum pada ketiga hari tersebut untuk mencegah terjadinya pencurian.
